@@ -1,4 +1,4 @@
-package com.bandwidth.task_service;
+package com.bandwidth.taskservice;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

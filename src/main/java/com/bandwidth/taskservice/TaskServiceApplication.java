@@ -1,4 +1,4 @@
-package com.bandwidth.task_service;
+package com.bandwidth.taskservice;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
