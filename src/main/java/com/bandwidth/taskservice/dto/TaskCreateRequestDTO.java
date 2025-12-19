@@ -17,6 +17,5 @@ public class TaskCreateRequestDTO implements Serializable {
     @NotNull(message = "Priority must be specified.")
     private Priority priority; // Uses the Priority Enum for strong typing
 
-    @NotNull(message = "User ID must be associated with the task.")
     private Long userId;
 }
