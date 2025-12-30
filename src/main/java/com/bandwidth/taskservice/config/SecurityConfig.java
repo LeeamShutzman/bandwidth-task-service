@@ -1,7 +1,10 @@
 package com.bandwidth.taskservice.config;
 
 import com.bandwidth.taskservice.security.JwtAuthenticationFilter;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.annotations.JavaTypeRegistrations;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -25,13 +28,8 @@ public class SecurityConfig {
 
     private final JwtAuthenticationFilter jwtAuthFilter;
 
-    // IMPORTANT: Copy your ALLOWED_ORIGINS from the Auth Service here
-    private static final List<String> ALLOWED_ORIGINS = Arrays.asList(
-            "http://localhost:8081",
-            "http://localhost:19006",
-            "http://10.0.0.5:8081"
-            // Add any other origins your frontend uses
-    );
+    @Value("${app.allowed.origins:http://localhost:8081}")
+    private List<String> allowedOrigins;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -62,7 +60,7 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(ALLOWED_ORIGINS);
+        configuration.setAllowedOrigins(allowedOrigins);
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(List.of("*"));
         configuration.setAllowCredentials(true);
