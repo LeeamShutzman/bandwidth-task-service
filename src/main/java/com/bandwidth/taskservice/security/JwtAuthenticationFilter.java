@@ -1,5 +1,6 @@
 package com.bandwidth.taskservice.security;
 
+import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -40,7 +41,17 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         }
 
         jwt = authHeader.substring(7);
-        username = jwtService.extractUsername(jwt);
+        try {
+            username = jwtService.extractUsername(jwt);
+        }catch (ExpiredJwtException e) {
+            // Manually set the response status to 401
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            response.getWriter().write("Token expired");
+            return; // Stop the filter chain here!
+        } catch (Exception e) {
+            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+            return;
+        }
 
         // If username is extracted and no authentication is currently set
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
